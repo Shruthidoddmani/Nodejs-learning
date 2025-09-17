@@ -13,3 +13,9 @@
 - connect your application to the DB
 - call the connection DB function before starting the application
 - create the user schema and user model
+
+- Diff b/w js object and json
+- add the middleware express,json() to the app
+- make the signUp API dynamic and recieve data from postman
+- fetch the one user with given input email and find all users
+
