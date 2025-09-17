@@ -18,4 +18,6 @@
 - add the middleware express,json() to the app
 - make the signUp API dynamic and recieve data from postman
 - fetch the one user with given input email and find all users
+- get user by Id
+-
 
