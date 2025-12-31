@@ -19,5 +19,8 @@
 - make the signUp API dynamic and recieve data from postman
 - fetch the one user with given input email and find all users
 - get user by Id
--
+- update user by id
+- update the user by email id
+- explore options in Model.findOneAndUpdate method.
+- 
 
