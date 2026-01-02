@@ -21,4 +21,8 @@
 - get user by Id and     
 - Delete a user by Id
 - diff b/w PATCH and PUT
+- update user by id
+- update the user by email id
+- explore options in Model.findOneAndUpdate method.
+- 
 
