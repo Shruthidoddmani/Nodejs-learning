@@ -18,6 +18,7 @@
 - add the middleware express,json() to the app
 - make the signUp API dynamic and recieve data from postman
 - fetch the one user with given input email and find all users
-- get user by Id
--
+- get user by Id and     
+- Delete a user by Id
+- diff b/w PATCH and PUT
 
