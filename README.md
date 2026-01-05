@@ -26,3 +26,5 @@
 - add requireDocument, unique, lowercase, defalt, validate, minLength, maxLength, min, trim
 - create a custom validator function for gender,
 - improve the DB schema
+- API level validation on Patch request & signup post api
+- explore validator library function and use validator function for password, email, photoUrl
