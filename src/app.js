@@ -12,8 +12,8 @@ app.post('/signUp', async (req, res) => {
         await user.save();
         res.status(200).send('User created successfully');
     } catch (err) {
-        console.log(err);
-        res.status(401).send('Something went wrong');
+        // console.log(err);
+        res.status(401).send(err);
     }
 })
 
@@ -52,7 +52,7 @@ app.get('/getUserById', async (req, res) => {
     try {
         const id = req.body.userId;
         const result = await User.findById(id);
-        console.log(result);
+        // console.log(result);
         if (result) {
             res.status(200).send(result);
         } else {
@@ -85,16 +85,18 @@ app.patch('/user', async (req, res) => {
         const id = req.body.userId;
         const emailId = req.body.emailId;
         const data = req.body;
-        console.log(id);
-        const result = await User.findOneAndUpdate({emailId}, data, );
-        console.log(result);
+        // console.log(id);
+        const result = await User.findOneAndUpdate({emailId}, data, {
+            returnDocument: 'after',
+            runValidators: true
+        } );
         if (result) {
             res.status(200).send(result);
         } else {
             res.status(401).send('Something went wrong');
         }
     } catch (err) {
-        res.status(401).send('Something went wrong');
+        res.status(401).send('Something went wrong  ' + err.message);
     }
 })
 
