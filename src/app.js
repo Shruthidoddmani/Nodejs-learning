@@ -7,13 +7,14 @@ app.use(express.json());
 // create user
 app.post('/signUp', async (req, res) => {
     try {
-        console.log(req.body);
+        const ALLOWED_FIELDS = ['userId', "password", "firstname", "lastName", "gender", "age", "skills", "about"]
+        const isAllowedToAddUser = Object.keys(req.body).every(k => ALLOWED_FIELDS.includes(k));
         const user = new User(req.body);
         await user.save();
         res.status(200).send('User created successfully');
     } catch (err) {
-        console.log(err);
-        res.status(401).send('Something went wrong');
+        // console.log(err);
+        res.status(401).send(err);
     }
 })
 
@@ -52,7 +53,7 @@ app.get('/getUserById', async (req, res) => {
     try {
         const id = req.body.userId;
         const result = await User.findById(id);
-        console.log(result);
+        // console.log(result);
         if (result) {
             res.status(200).send(result);
         } else {
@@ -68,7 +69,7 @@ app.delete('/user', async (req, res) => {
     try {
         const id = req.body.userId;
         console.log(id);
-        const result = await User.findOneAndDelete({_id: id});
+        const result = await User.findOneAndDelete({ _id: id });
         console.log(result);
         if (result) {
             res.status(200).send(result);
@@ -80,21 +81,25 @@ app.delete('/user', async (req, res) => {
     }
 })
 
-app.patch('/user', async (req, res) => {
+app.patch('/user/:userId', async (req, res) => {
     try {
-        const id = req.body.userId;
+        const id = req.params?.userId;
         const emailId = req.body.emailId;
-        const data = req.body;
         console.log(id);
-        const result = await User.findOneAndUpdate({emailId}, data, );
-        console.log(result);
+        const data = req.body;
+        const ALLOWED_UPDATES = ['userId', "password", "firstname", "lastName", "gender", "age", "skills", "about"]
+        const isUpdateAllowed = Object.keys(data).every(k => ALLOWED_UPDATES.includes(k));
+        const result = await User.findOneAndUpdate({ emailId }, data, {
+            returnDocument: 'after',
+            runValidators: true
+        });
         if (result) {
             res.status(200).send(result);
         } else {
             res.status(401).send('Something went wrong');
         }
     } catch (err) {
-        res.status(401).send('Something went wrong');
+        res.status(401).send('Something went wrong  ' + err.message);
     }
 })
 
