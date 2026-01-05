@@ -22,5 +22,7 @@
 - update user by id
 - update the user by email id
 - explore options in Model.findOneAndUpdate method.
-- 
-
+- explore schemaType from mongoose
+- add requireDocument, unique, lowercase, defalt, validate, minLength, maxLength, min, trim
+- create a custom validator function for gender,
+- improve the DB schema
