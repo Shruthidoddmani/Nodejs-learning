@@ -2,10 +2,14 @@ const express = require('express');
 const app = express();
 const connectDb = require('./config/database');
 const User = require('./models/user');
-const { validateSignUpData } = require('./utils/validation');
+const { validateSignUpData, logiValidate } = require('./utils/validation');
 const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const jwtSecretKey = "Shruthi@123"
 
 app.use(express.json());
+app.use(cookieParser());
 // create user
 app.post('/signUp', async (req, res) => {
     try {
@@ -13,16 +17,66 @@ app.post('/signUp', async (req, res) => {
         const { firstName, lastName, emailId, password } = req.body
         const passwordHash = await bcrypt.hash(password, 10);
         const user = new User({
-            firstName, 
+            firstName,
             lastName,
             emailId,
-            password : passwordHash
+            password: passwordHash
         });
         await user.save();
         res.status(200).send('User created successfully');
     } catch (err) {
         res.status(400).send('ERROR : ' + err.message);
     }
+})
+
+app.post('/login', async (req, res) => {
+    try {
+        const { emailId, password } = req.body;
+        logiValidate(req);
+        const user = await User.findOne({ emailId });
+        if (!user) {
+            throw new Error('Invalid credentials')
+        }
+        bcrypt.compare(password, user.password, (err, result) => {
+            if (result) {
+                const token = jwt.sign({
+                    emailId: user.emailId,
+                    userId: user._id
+                }, jwtSecretKey)
+                res.cookie('token', token)
+                res.status(200).send('Login success')
+            } else {
+                res.status(400).send('Invalid credentials');
+            }
+        });
+
+    } catch (err) {
+        res.status(400).send('ERROR : ' + err.message)
+    }
+
+})
+
+app.get('/profile', async (req, res) => {
+    try {
+        const { token } = req.cookies;
+        if(!token){
+            throw new Error('Invalid token');
+        }
+        jwt.verify(token, jwtSecretKey, async (err, response) => {
+            if (err) {
+                res.status(400).send('Invalid Signature!!!');
+            } else {
+                const user = await User.findOne({ emailId: response?.emailId, _id: response?.userId })
+                if (!user) {
+                    throw new Error('User is not valid');
+                }
+                res.send(user);
+            }
+        });
+    } catch (err) {
+        res.status(400).send("ERROR : " + err.message);
+    }
+
 })
 
 // fetch all the users 

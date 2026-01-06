@@ -30,3 +30,13 @@
 - improve the DB schema
 - API level validation on Patch request & signup post api
 - explore validator library function and use validator function for password, email, photoUrl
+- validate data in signUp API
+- install bcrypt package
+- create password hash by using bcrypt library and save the hash password to the db
+- create login API
+- validated the /login API request
+- understand the JWT token, cookies cookie parser
+- created the jwt token for the logged in user
+- created the /profile GET API
+- verfied the jwt token for the logged in user in /profile API
+
