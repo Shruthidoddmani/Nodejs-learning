@@ -39,4 +39,6 @@
 - created the jwt token for the logged in user
 - created the /profile GET API
 - verfied the jwt token for the logged in user in /profile API
-
+- expire the jwt token and res.cookie expire
+- create schema method to create JWT token 
+- create schema method to validate the login password

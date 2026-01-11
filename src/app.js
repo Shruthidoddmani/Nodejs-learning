@@ -38,19 +38,18 @@ app.post('/login', async (req, res) => {
         if (!user) {
             throw new Error('Invalid credentials')
         }
-        bcrypt.compare(password, user.password, (err, result) => {
-            if (result) {
-                const token = jwt.sign({
-                    emailId: user.emailId,
-                    userId: user._id
-                }, jwtSecretKey)
-                res.cookie('token', token)
+        const isPasswordValid = user.validatePassword(password);
+        if (isPasswordValid) {
+            const token = await user.getJWT();
+            if (token) {
+                res.cookie('token', token, {expires: new Date(Date.now() + 1 * 3600000)})
                 res.status(200).send('Login success')
-            } else {
-                res.status(400).send('Invalid credentials');
+            } else{
+                res.status(400).send('Failed to login user');
             }
-        });
-
+        } else {
+            res.status(400).send('Invalid credentials');
+        }
     } catch (err) {
         res.status(400).send('ERROR : ' + err.message)
     }
@@ -67,7 +66,7 @@ app.get('/profile', userAuth, async (req, res,) => {
 
 })
 
-app.post('/sendConnection', userAuth, async(req, res, next) => {
+app.post('/sendConnection', userAuth, async (req, res, next) => {
     res.status(200).send(req?.user?.firstName + "is sent a connection");
 })
 // fetch all the users 
