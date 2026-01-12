@@ -13,7 +13,7 @@ const validateSignUpData = (req) => {
     }
 }
 
-const logiValidate = (req) => {
+const loginValidate = (req) => {
     const { emailId, password } = req.body;
     if (!validator.isEmail(emailId)) {
         throw new Error('Invalid email')
@@ -22,5 +22,5 @@ const logiValidate = (req) => {
     }
 }
 module.exports = { validateSignUpData,
-    logiValidate
+    loginValidate
  };

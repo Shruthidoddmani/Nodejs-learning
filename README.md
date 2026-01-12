@@ -45,3 +45,6 @@
 
 - create a list all the APIs which are required to develop tinder app
 - group multiple routes under respective routers
+- explore the express router documentation
+- create routes folder for managing auth, profile and request routers
+- create auth, profile, request router and import these routers in app.js
