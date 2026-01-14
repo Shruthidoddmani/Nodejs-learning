@@ -3,7 +3,7 @@ const authRouter = express.Router();
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const { validateSignUpData,
-    loginValidate } = require('../utils/validation');
+    validateLogin } = require('../utils/validation');
 const User = require('../models/user');
 
 authRouter.use(cookieParser());
@@ -30,7 +30,7 @@ authRouter.post('/signUp', async (req, res) => {
 authRouter.post('/login', async (req, res) => {
     try {
         const { emailId, password } = req.body;
-        loginValidate(req);
+        validateLogin(req);
         const user = await User.findOne({ emailId });
         if (!user) {
             throw new Error('Invalid credentials')
@@ -51,6 +51,11 @@ authRouter.post('/login', async (req, res) => {
         res.status(400).send('ERROR : ' + err.message)
     }
 
+})
+
+authRouter.post('/logout', (req, res) => {
+    res.cookie('token', null, { expires: new Date(Date.now()) });
+    res.status(200).send('success');
 })
 
 
