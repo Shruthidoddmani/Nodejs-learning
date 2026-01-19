@@ -3,17 +3,17 @@ const profileRouter = express.Router();
 const validator = require('validator');
 const { userAuth } = require('../middleware/auth');
 const { validateEditProfileData } = require('../utils/validation');
-const UserModel  = require('../models/user')
+const UserModel = require('../models/user')
 
 
 
 profileRouter.get('/view', userAuth, async (req, res,) => {
     try {
         console.log(req.body.emailId)
-        if(!validator.isEmail(req.body.emailId)){
+        if (!validator.isEmail(req.body.emailId)) {
             res.status(400).send('Invalid email');
-        }else{
-            const user = await UserModel.findOne({emailId: req.body.emailId})
+        } else {
+            const user = await UserModel.findOne({ emailId: req.body.emailId })
             console.log('user', user);
             res.status(200).send(user);
         }
@@ -24,15 +24,20 @@ profileRouter.get('/view', userAuth, async (req, res,) => {
 })
 profileRouter.patch('/edit', userAuth, async (req, res,) => {
     try {
-        if(!validateEditProfileData(req)){
-            res.status(400).send('Invalid data');
-        }else{
-            const user = await UserModel.findOneAndUpdate({emailId: req.body.emailId}, {...req.body}, {
-                returnDocument:'after'
-            })
-            console.log('user', user);
-            res.status(200).send(user);
-        }
+        if (!validateEditProfileData(req)) {
+            throw new Error("Invalid edit request");
+        } 
+        const loggedInUser = req.user;
+
+        Object.keys(req.body).forEach((key) => loggedInUser[key] = req.body[key]);
+
+        await loggedInUser.save();
+
+        res.json({
+            message: `${loggedInUser.firstName}, your profile updated successfully`,
+            data: loggedInUser,
+        })
+
     } catch (err) {
         res.status(400).send("ERROR : " + err.message);
     }
