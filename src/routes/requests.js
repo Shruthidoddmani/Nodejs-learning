@@ -10,10 +10,26 @@ requestsRouter.post('/send/:status/:toUserId', userAuth, async (req, res) => {
         const toUserId = req.params.toUserId;
         const fromUserId = req.user._id;
         const status = req.params.status;
+        const allowedStatus = ["ignored", "interested"].includes(status);
 
+        if(!toUserId){
+            return res.status(400).json({
+                message: "enter a correct user Id"
+            })
+        }
+        if(!allowedStatus){
+            return res.status(400).json({
+                message: "Enter a valid status"
+            })
+        }
+        // if(toUserId == fromUserId){
+        //     return res.status(400).json({
+        //         message: "Can't send a request to the logged in user"
+        //     })
+        // }
         const toUserExists = await UserModel.findById(toUserId);
         if (!toUserExists) {
-            return res.status(400).status('user not exists');
+            return res.status(400).send('user not exists');
         }
         const connectionRequest = new connectionRequestModel({
             fromUserId,
@@ -26,7 +42,7 @@ requestsRouter.post('/send/:status/:toUserId', userAuth, async (req, res) => {
                 { fromUserId: toUserId, toUserId: fromUserId }
             ]
         })
-        console.log(existingConnectionRequest);
+        // console.log(existingConnectionRequest);
         if (existingConnectionRequest) {
             return res.status(400).json({
                 message: 'Connection request already exists'
@@ -39,7 +55,7 @@ requestsRouter.post('/send/:status/:toUserId', userAuth, async (req, res) => {
         })
 
     } catch (err) {
-        res.status(400).status('ERROR: ' + err.message);
+        res.status(400).send('ERROR: ' + err.message);
     }
 });
 
