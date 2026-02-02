@@ -61,6 +61,7 @@
 - Read more about indexes in MongoDB
 - Why do we need index in DB?
 - what is disadvantages and disadvantages of creating indexes?
+- read the article about compound indexes
 
 
 
