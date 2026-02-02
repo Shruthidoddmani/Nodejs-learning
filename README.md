@@ -53,3 +53,9 @@
 - create PATCH /profile/forgetPassword API
 - validate all the data in every POST, PATCH API's
 
+- Read more about indexes in MongoDB
+- Why do we need index in DB?
+- what is disadvantages and disadvantages of creating indexes?
+
+
+
