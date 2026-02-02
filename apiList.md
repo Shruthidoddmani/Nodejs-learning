@@ -4,21 +4,20 @@
 - POST /login
 - POST /logout
 
-- GET /profile
-- PATCH /profile /edit
-- PATCH /profile/password
-- POST /sendConnection
+profileRouter
+- GET /profile/view
+- PATCH /profile/edit
+- PATCH profile/password
 
+connectionRequestRouter
 - POST /request/send/interested/:userId
 - POST /request/send/ignored/:userId
+- POST /request/send/accepted/:requestId
+- POST /request/send/rejected/:requestId
 
-- POST /request/review/accepted/:requestId
-- POST /request/review/rejected/:requestId
+userRouter
+- GET /user/connections
+- GET /user/requests
+- GET /user/feed - gets you the profile of other users on platform
 
-- GET /connections
-- GET /requests/received
-- GET /feed - gets you the pofile of the other users
-
-status : ignore, interested, accepted, rejected
-
-
+status: ignore, interested, accepted, rejected

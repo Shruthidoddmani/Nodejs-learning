@@ -42,3 +42,14 @@
 - expire the jwt token and res.cookie expire
 - create schema method to create JWT token 
 - create schema method to validate the login password
+
+- create a list all the APIs which are required to develop tinder app
+- group multiple routes under respective routers
+- explore the express router documentation
+- create routes folder for managing auth, profile and request routers
+- create auth, profile, request router and import these routers in app.js
+- create POST /logout API
+- create PATCH /profile/view and /profile/edit API
+- create PATCH /profile/forgetPassword API
+- validate all the data in every POST, PATCH API's
+

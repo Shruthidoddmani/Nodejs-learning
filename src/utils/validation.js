@@ -13,7 +13,7 @@ const validateSignUpData = (req) => {
     }
 }
 
-const logiValidate = (req) => {
+const validateLogin = (req) => {
     const { emailId, password } = req.body;
     if (!validator.isEmail(emailId)) {
         throw new Error('Invalid email')
@@ -21,6 +21,17 @@ const logiValidate = (req) => {
         throw new Error('Invalid password');
     }
 }
-module.exports = { validateSignUpData,
-    logiValidate
+
+const validateEditProfileData = (req) => {
+    const allowedFields = [ 'emailId', 'firstName', 'lastName', 'skills', 'about', 'photoUrl', 'gender', 'age'  ]
+    
+    const isEditAllowed = Object.keys(req.body).every(field => allowedFields.includes(field));
+
+    return isEditAllowed;
+}
+
+module.exports = { 
+    validateSignUpData,
+    validateLogin,
+    validateEditProfileData
  };
