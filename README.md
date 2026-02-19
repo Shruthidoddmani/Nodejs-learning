@@ -63,5 +63,8 @@
 - what is disadvantages and disadvantages of creating indexes?
 - read the article about compound indexes
 
+- create the GET /user/received/requests API which gives the all the requests of logged in user
+- Read about ref and populate
+
 
 
