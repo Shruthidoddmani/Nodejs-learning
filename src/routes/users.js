@@ -38,4 +38,20 @@ userRouter.get("/connections", userAuth, async (req, res) => {
     })
     res.status(200).json({ data: connectionRequests });
 })
+
+userRouter.get('/feed', userAuth, async (req, res) => {
+    try {
+        const loggedInUser = req.user;
+
+        // user should see all the user card except his own card
+        // except interested status card
+        // except ignored status card
+        // his connections
+        // already sent the connection request
+
+    } catch (err) {
+        res.status(400).send("ERROR: " + err.message)
+    }
+
+})
 module.exports = userRouter;
