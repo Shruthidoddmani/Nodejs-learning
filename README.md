@@ -70,6 +70,10 @@
 - Logic for GET /feed API
 - Explore the $nin, $nad, $ne and other queries in Mongodb
 
+- pagination
+
+
+
 
 
 
