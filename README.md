@@ -53,3 +53,18 @@
 - create PATCH /profile/forgetPassword API
 - validate all the data in every POST, PATCH API's
 
+- create connection request Schema
+- send connectiom Request API
+- proper validation of Data
+- think about the corner cases
+- $or query and $and query in mongodb
+- Read more about indexes in MongoDB
+- Why do we need index in DB?
+- what is disadvantages and disadvantages of creating indexes?
+- read the article about compound indexes
+
+- create the GET /user/received/requests API which gives the all the requests of logged in user
+- Read about ref and populate
+
+
+

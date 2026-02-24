@@ -12,12 +12,8 @@ requestsRouter.post('/send/:status/:toUserId', userAuth, async (req, res) => {
         const status = req.params.status;
         const allowedStatus = ["ignored", "interested"].includes(status);
 
-        if(!toUserId){
-            return res.status(400).json({
-                message: "enter a correct user Id"
-            })
-        }
-        if(!allowedStatus){
+
+        if (!allowedStatus) {
             return res.status(400).json({
                 message: "Enter a valid status"
             })
@@ -29,7 +25,7 @@ requestsRouter.post('/send/:status/:toUserId', userAuth, async (req, res) => {
         // }
         const toUserExists = await UserModel.findById(toUserId);
         if (!toUserExists) {
-            return res.status(400).send('user not exists');
+            return res.status(400).send('User not found');
         }
         const connectionRequest = new connectionRequestModel({
             fromUserId,
@@ -58,6 +54,36 @@ requestsRouter.post('/send/:status/:toUserId', userAuth, async (req, res) => {
         res.status(400).send('ERROR: ' + err.message);
     }
 });
+
+requestsRouter.post('/review/:status/:requestId', userAuth, async (req, res) => {
+    const { status, requestId } = req.params;
+    const loggedInUserId = req.user._id;
+
+    const allowedStatus = ['rejected', 'accepted'];
+    if(!allowedStatus.includes(status)){
+        return res.status(400).json({
+            message:'invalid status'
+        });
+    }
+
+    const connectionRequest = await connectionRequestModel.findOne({
+        _id: requestId,
+        toUserId: loggedInUserId,
+        status: "interested"
+    })
+    
+    if(!connectionRequest){
+        return res.status(404).json({
+            message:"Connection request not found"
+        })
+    }
+    connectionRequest.status = status;
+    const data = await connectionRequest.save();
+    res.status(200).json({
+        message: "Connection request "+ status , data
+    })
+    
+})
 
 
 

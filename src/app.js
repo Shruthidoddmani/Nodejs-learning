@@ -11,10 +11,12 @@ app.use(cookieParser());
 const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
 const requestRouter = require('./routes/requests');
+const usersRouter = require('./routes/users')
 
 app.use('/auth', authRouter);
 app.use('/profile', profileRouter);
 app.use('/request', requestRouter);
+app.use('/users', usersRouter);
 
 
 
@@ -22,20 +24,20 @@ app.use('/request', requestRouter);
 
 
 
-// fetch all the users 
-app.post('/findUser', async (req, res) => {
-    try {
-        const user = User.findOne({ emailId: req.body.emailId })
-        if (!user) {
-            res.status(200).send('User exists');
-        } else {
-            res.status(401).send('User not found');
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(401).send('Something went wrong');
-    }
-})
+// // fetch all the users 
+// app.post('/findUser', async (req, res) => {
+//     try {
+//         const user = User.findOne({ emailId: req.body.emailId })
+//         if (!user) {
+//             res.status(200).send('User exists');
+//         } else {
+//             res.status(401).send('User not found');
+//         }
+//     } catch (err) {
+//         console.log(err);
+//         res.status(401).send('Something went wrong');
+//     }
+// })
 
 
 
