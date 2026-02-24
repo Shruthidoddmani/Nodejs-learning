@@ -65,6 +65,11 @@
 
 - create the GET /user/received/requests API which gives the all the requests of logged in user
 - Read about ref and populate
+- create GET /user/requests/received with all the checks
+- create GET /user/connections
+- Logic for GET /feed API
+- Explore the $nin, $nad, $ne and other queries in Mongodb
+
 
 
 

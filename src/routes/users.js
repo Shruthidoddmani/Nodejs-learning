@@ -3,7 +3,7 @@ const userRouter = express.Router();
 
 const { userAuth } = require('../middleware/auth');
 const ConnectionRequestModel = require('../models/connectionRequests');
-
+const UsersModel = require('../models/user');
 // get all the pending connection request from the logged in user
 userRouter.get('/requests/received', userAuth, async (req, res) => {
     try {
@@ -42,13 +42,23 @@ userRouter.get("/connections", userAuth, async (req, res) => {
 userRouter.get('/feed', userAuth, async (req, res) => {
     try {
         const loggedInUser = req.user;
+        const connectionRequests = await ConnectionRequestModel.find({
+            $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }]
+        }
+        ).select('fromUserId toUserId')
 
-        // user should see all the user card except his own card
-        // except interested status card
-        // except ignored status card
-        // his connections
-        // already sent the connection request
+        const hideUsersFromFeed = new Set();
+        connectionRequests.forEach(req => {
+            hideUsersFromFeed.add(req.fromUserId.toString())
+            hideUsersFromFeed.add(req.toUserId.toString())
+        })
 
+        const users = await UsersModel.find({
+            $and: [
+                { _id: { $nin: Array.from(hideUsersFromFeed) } },
+                { _id: { $ne: loggedInUser._id } }
+            ]
+        })
     } catch (err) {
         res.status(400).send("ERROR: " + err.message)
     }
